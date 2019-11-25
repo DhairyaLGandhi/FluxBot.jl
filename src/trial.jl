@@ -7,7 +7,7 @@ const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results:
 
 const std_resp = Dict("body" => "I couldn't get that. Maybe try asking for `commands`?")
 const failed_resp = Dict("body" => "Pipeline Failed: ")
-placeholder_resp(issue, pl) = Dict("body" => "Alright, I'll respond here when I have results for pipeline for #$issue. The pipeline `$(pl["id"])` can be found at $(pl["web_url"])")
+placeholder_resp(issue, pl) = Dict("body" => "Alright, I'll respond here when I have results for #$issue at `$(pl["sha"])`. The pipeline can be found at $(pl["web_url"])")
 
 """
 checkout for key `pull_request` in event.payload["issue"]
@@ -55,11 +55,13 @@ most recent artifacts through its API.
 """
 function no_existing_pipelines()
   d = Dict("status"=>"pending")
-  pending = HTTP.get("https://gitlab.com/api/v4/projects/$PROJECT/pipelines", query = d).body |> String
+  pending = HTTP.get("https://gitlab.com/api/v4/projects/$PROJECT/pipelines", query = d).body
+  pending = String(pending)
   pending = pending == "[]"
   
   d = Dict("status"=>"running")
-  running = HTTP.get("https://gitlab.com/api/v4/projects/$PROJECT/pipelines", query = d).body |> String
+  running = HTTP.get("https://gitlab.com/api/v4/projects/$PROJECT/pipelines", query = d).body
+  running = String(runnning)
   running = running == "[]"
 
   running == pending == false
@@ -133,7 +135,9 @@ function trial()
     else
       @assert com == "build"
       # resp = trigger_pipeline(reply_to, model, event)
-      resp = Dict("id" => "98138293", "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293")
+      resp = Dict("id" => "98138293",
+                  "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
+                  "sha" => "fbb377a7b436327c298c536ecb9d2ff5ee8e07d4")
 
       # Handle if pipeline not triggered
       if resp == nothing
