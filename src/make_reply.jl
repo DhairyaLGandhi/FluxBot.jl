@@ -1,8 +1,5 @@
 # This is executed inside GitLab, so all the variables from there should be available here.
 
-# const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
-
-# Just link to where the arifacts for a job can be browsed
 # Download artifacts
 # Unzip and make into a gist
 # Send response

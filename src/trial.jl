@@ -1,4 +1,4 @@
-# const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
+const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
 const trigger = r"FluxBot: .*"
 const PROJECT = "15168210" # Flux.jl
 
