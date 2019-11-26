@@ -19,7 +19,7 @@ function ci()
   possible_models = union(possible_models...)
   possible_models = uppercase.(possible_models)
 
-  meta = TOML.parsefile(joinpath(pwd(), "scripts" "Notebooks.toml"))
+  meta = TOML.parsefile(joinpath(pwd(), "scripts", "Notebooks.toml"))
   available_models = keys(meta)
 
   model = intersect(possible_models, available_models)

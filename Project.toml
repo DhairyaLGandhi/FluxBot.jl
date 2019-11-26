@@ -6,4 +6,5 @@ version = "0.1.0"
 [deps]
 GitHub = "bc5e4493-9b4d-5f90-b8aa-2b2bcaad7a26"
 Glob = "c27321d9-0574-5035-807b-f59d2c89b15c"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Sockets = "6462fe0b-24de-5631-8697-dd941f90decc"
