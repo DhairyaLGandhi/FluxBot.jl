@@ -64,7 +64,7 @@ function no_existing_pipelines()
   running = String(running)
   running = running == "[]"
 
-  running == pending == false
+  running == pending == true
 end
 
 """
