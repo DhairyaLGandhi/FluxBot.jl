@@ -1,13 +1,8 @@
-using Pkg.TOML
 function ci()
   @info ENV["GITHUB_EVENT_PATH"]
   f = JSON.parsefile(ENV["GITHUB_EVENT_PATH"])
   @show keys(f)
   event = GitHub.event_from_payload!("commit", f)
-
-  if event.payload["action"] == "deleted"
-    return HTTP.Response(200)
-  end
 
   repo = event.repository
   reply_to = event.payload["issue"]["number"]
@@ -19,12 +14,21 @@ function ci()
   possible_models = union(possible_models...)
   possible_models = uppercase.(possible_models)
 
-  meta = TOML.parsefile(joinpath(pwd(), "scripts", "Notebooks.toml"))
+  # meta = TOML.parsefile(joinpath(pwd(), "scripts", "Notebooks.toml"))
+  meta = ["MNIST", "CPPN", ]
   available_models = keys(meta)
 
   model = intersect(possible_models, available_models)
   model = join(model, ' ')
   @show model
+
+  # Handle when model is not found
+  if all(map(isspace, collect(model)))
+  	GitHub.create_comment(event.repository, reply_to, comment_kind,
+		                      auth = myauth,
+		                      params = Dict("body" => "No matching models found, consider adding the appropriate models to the `Notebooks.toml`."))
+  	return HTTP.Response(200)
+  end
 
   comment_kind = :issue
   # resp = trigger_pipeline(reply_to, model, event, fluxbot = false)

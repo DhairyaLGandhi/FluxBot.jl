@@ -2,6 +2,7 @@ module FluxBot
 
 using GitHub, Glob
 using GitHub.JSON, GitHub.HTTP
+using Pkg.TOML
 
 include("trial.jl")
 include("make_reply.jl")
