@@ -8,7 +8,7 @@ function ci()
   # Fails if push to repo directly
   # issue => pull_request
   @show keys(event.payload)
-  reply_to = event.payload["issue"]["number"]
+  reply_to = event.payload["pull_request"]["number"]
 
   files = [f.filename for f in GitHub.pull_request_files(repo, reply_to, auth = myauth)]
   possible_models = [split(f, "/") for f in files]
