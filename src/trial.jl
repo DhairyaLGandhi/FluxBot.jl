@@ -1,4 +1,4 @@
-const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
+const myauth = GitHub.authenticate(ENV["FLUXBOT_GITHUB_TOKEN"])
 const trigger = r"FluxBot: .*"
 const PROJECT = "15168210" # Flux.jl
 
@@ -50,8 +50,8 @@ end
 
 Checks that the current project does not have any pending or running pipelines.
 
-Needed to ensure we get the correct artifacts out, since GitLab only serves the
-most recent artifacts through its API.
+Needed to ensure we get the correct artifacts out, since GitLab only serves the most recent
+artifacts through its API.
 """
 function no_existing_pipelines()
   d = Dict("status"=>"pending")
@@ -69,13 +69,11 @@ end
 
 """
     trigger_pipeline(id, model; ref = "master", token)
-Triggers the model-zoo build with the given
-PR against the specified models.
+Triggers the model-zoo build with the given PR against the specified models.
 
 Returns the output of the curl call as a `Dict`.
 
-NOTE: Checks for an existing running pipeline, so
-the artifacts generated are consistent.
+NOTE: Checks for an existing running pipeline, so the artifacts generated are consistent.
 """
 function trigger_pipeline(id, model, event; ref = "master", token = ENV["GITLAB_MODELZOO_TOKEN"])
   # replace project with 15454378
