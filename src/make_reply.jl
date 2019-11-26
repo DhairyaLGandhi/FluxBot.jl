@@ -8,13 +8,13 @@
 const CI_JOB_ID="359540097"
 const CI_JOB_NAME="julia:1.1"
 
-function respond()
+function respond(repo_name = "Flux.jl")
   artifacts_name = "artifacts_$CI_JOB_ID.zip"
-  download("https://gitlab.com/JuliaGPU/Flux.jl/-/jobs/artifacts/master/download?job=$CI_JOB_NAME", artifacts_name)
+  download("https://gitlab.com/JuliaGPU/$repo_name/-/jobs/artifacts/master/download?job=$CI_JOB_NAME", artifacts_name)
   run(`unzip $artifacts_name`)
   files = glob("*.cov", "src")#, "notebooks")
   
-  gist_params = Dict("description" => "Build Results",
+  gist_params = Dict("description" => "Build Results for $CI_JOB_NAME",
                       "public" => true,
                       "files" => Dict(last(split(f,"/")) => Dict("content" => read(f,String),) for f in files))
   

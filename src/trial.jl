@@ -1,4 +1,4 @@
-const myauth = GitHub.authenticate(ENV["FLUXBOT_GITHUB_TOKEN"])
+const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
 const trigger = r"@ModelZookeeper .*"
 const PROJECT = "15168210" # Flux.jl
 
@@ -7,7 +7,8 @@ const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results:
 
 const std_resp = Dict("body" => "I couldn't get that. Maybe try asking for `commands`?")
 const failed_resp = Dict("body" => "Pipeline Failed: ")
-placeholder_resp(issue, pl) = Dict("body" => "Alright, I'll respond here when I have results for #$issue at `$(pl["sha"])`. The pipeline can be found at $(pl["web_url"])")
+placeholder_resp(issue, pl) = Dict("body" =>
+  "Alright, I'll respond here when I have results for #$issue at `$(pl["sha"])`. The pipeline can be found at $(pl["web_url"])")
 
 """
 checkout for key `pull_request` in event.payload["issue"]
@@ -20,14 +21,12 @@ get_command_name(s) = split(s, ' ')[2]
 """
   get_response(command, output = "")
 
-Generate the params dict required to send a comment
+Generate the params dict required to send a comment.
 
-Generally is fine as is, but the optional
-output field can be appended to the message, for when
-the `build` command needs to return the gist url
+Generally is fine as is, but the optional output field can be appended to the message, for
+when the `build` command needs to return the gist url
 
-Potential security risk, in that we don't want it to
-leak any data through this `output`.
+Potential security risk, in that we don't want it to leak any data through this `output`.
 """
 function get_response(command, output = "")
   if haskey(dic, command)
@@ -75,7 +74,7 @@ Returns the output of the curl call as a `Dict`.
 
 NOTE: Checks for an existing running pipeline, so the artifacts generated are consistent.
 """
-function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TOKEN"])
+function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TOKEN"], fluxbot = true)
   # replace project with 15454378
 
   # Check existing running pipelines triggered by bot
@@ -83,7 +82,7 @@ function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZO
     read(`curl -X POST
        -F "token=$token"
        -F "ref=$ref"
-       -F "variables[FLUXBOT]=true"
+       -F "variables[FLUXBOT]=$fluxbot"
        -F "variables[PRID]=$id"
        -F "variables[TESTSUITE]=$model"
        -F "variables[MODELZOO_JOB_ID]=98138293"
@@ -101,7 +100,7 @@ function trial()
   if event.payload["action"] == "deleted"
     return HTTP.Response(200)
   end
-  @show GitHub.name(event.repository)
+  # @show GitHub.name(event.repository)
 
   # Ignore non-collaborators
   repo = event.repository
