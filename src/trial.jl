@@ -61,7 +61,7 @@ function no_existing_pipelines()
   
   d = Dict("status"=>"running")
   running = HTTP.get("https://gitlab.com/api/v4/projects/$PROJECT/pipelines", query = d).body
-  running = String(runnning)
+  running = String(running)
   running = running == "[]"
 
   running == pending == false
