@@ -24,6 +24,8 @@ function ci()
   model = intersect(possible_models, available_models)
   model = join(model, ' ')
   @show model
+  
+  comment_kind = :issue
 
   # Handle when model is not found
   if all(map(isspace, collect(model)))
@@ -33,7 +35,6 @@ function ci()
   	return HTTP.Response(200)
   end
 
-  comment_kind = :issue
   # resp = trigger_pipeline(reply_to, model, event, fluxbot = false)
   resp = Dict("id" => "98138293",
               "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
