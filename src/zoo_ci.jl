@@ -14,8 +14,7 @@ function ci()
 	else
 		reply_to = event.payload["commits"] |> last
 	  comment_kind = :commit
-		@show keys(reply_to)
-		return HTTP.Response(200)
+	  reply_to = reply_to["id"]
 	end
 
   files = [f.filename for f in GitHub.pull_request_files(repo, reply_to, auth = myauth)]
@@ -36,6 +35,7 @@ function ci()
 
   # Handle when model is not found
   if all(map(isspace, collect(model)))
+  	# comment_kind == :commit && return
   	GitHub.create_comment(event.repository, reply_to, comment_kind,
 		                      auth = myauth,
 		                      params = Dict("body" => "No matching models found, consider adding the appropriate models to the `Notebooks.toml`."))
