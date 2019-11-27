@@ -7,7 +7,6 @@ function ci()
 
   # Fails if push to repo directly
   # issue => pull_request
-  @show event.payload
   if haskey(event.payload, "pull_request")
 	  reply_to = event.payload["pull_request"]["number"]
 	  comment_kind = :issue
@@ -40,11 +39,8 @@ function ci()
   # Handle when model is not found
   if all(map(isspace, collect(model)))
   	# comment_kind == :commit && return
-  	# GitHub.create_comment(event.repository, reply_to, comment_kind,
-		 #                      auth = myauth,
-		 #                      params = Dict("body" => "No matching models found, consider adding the appropriate models to the `Notebooks.toml`."))
 
-		throw(Exception("No matching models found, consider adding the appropriate models to the `Notebooks.toml`."))
+		throw(ErrorException("No matching models found, consider adding the appropriate models to the `Notebooks.toml`."))
   	return HTTP.Response(200)
   end
 
