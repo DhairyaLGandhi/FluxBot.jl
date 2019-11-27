@@ -35,7 +35,7 @@ function ci()
 		model = "MNIST"
 	end
 
-	if 
+	# if 
   # Handle when model is not found
   if all(map(isspace, collect(model)))
   	# comment_kind == :commit && return
