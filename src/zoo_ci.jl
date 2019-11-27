@@ -17,20 +17,24 @@ function ci()
 	  reply_to = reply_to["id"]
 	end
 
-  files = [f.filename for f in GitHub.pull_request_files(repo, reply_to, auth = myauth)]
-  possible_models = [split(f, "/") for f in files]
-  possible_models = [length(f) > 1 ? f : [] for f in possible_models]
-  possible_models = [f[1:end-1] for f in possible_models]
-  possible_models = union(possible_models...)
-  possible_models = uppercase.(possible_models)
+	if comment_kind == :issue
+	  files = [f.filename for f in GitHub.pull_request_files(repo, reply_to, auth = myauth)]
+	  possible_models = [split(f, "/") for f in files]
+	  possible_models = [length(f) > 1 ? f : [] for f in possible_models]
+	  possible_models = [f[1:end-1] for f in possible_models]
+	  possible_models = union(possible_models...)
+	  possible_models = uppercase.(possible_models)
 
-  # meta = TOML.parsefile(joinpath(pwd(), "scripts", "Notebooks.toml"))
-  meta = ["MNIST", "CPPN", ]
-  available_models = keys(meta)
+	  # meta = TOML.parsefile(joinpath(pwd(), "scripts", "Notebooks.toml"))
+	  meta = ["MNIST", "CPPN", ]
+	  available_models = keys(meta)
 
-  model = intersect(possible_models, available_models)
-  model = join(model, ' ')
-  @show model
+	  model = intersect(possible_models, available_models)
+	  model = join(model, ' ')
+	  @show model
+	else
+		model = ""
+	end
 
 
   # Handle when model is not found
