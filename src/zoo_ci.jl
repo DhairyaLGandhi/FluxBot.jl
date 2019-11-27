@@ -51,5 +51,5 @@ function ci()
 
   GitHub.create_comment(event.repository, reply_to, comment_kind,
                         auth = myauth,
-                        params = placeholder_resp(reply_to, resp))
+                        params = placeholder_resp(reply_to, resp, comment_kind = comment_kind))
 end
