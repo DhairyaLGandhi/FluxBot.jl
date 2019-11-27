@@ -12,7 +12,7 @@ function ci()
 	  reply_to = event.payload["pull_request"]["number"]
 	  comment_kind = :issue
 	else
-		reply_to = event.payload["commits"]
+		reply_to = event.payload["commits"] |> last
 	  comment_kind = :commit
 		@show keys(reply_to)
 		return HTTP.Response(200)
