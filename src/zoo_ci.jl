@@ -32,10 +32,10 @@ function ci()
 	  model = join(model, ' ')
 	  @show model
 	else
-		model = ""
+		model = "MNIST"
 	end
 
-
+	if 
   # Handle when model is not found
   if all(map(isspace, collect(model)))
   	# comment_kind == :commit && return
