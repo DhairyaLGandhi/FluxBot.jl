@@ -8,7 +8,15 @@ function ci()
   # Fails if push to repo directly
   # issue => pull_request
   @show event.payload
-  reply_to = event.payload["pull_request"]["number"]
+  if haskey(event.payload, "pull_request")
+	  reply_to = event.payload["pull_request"]["number"]
+	  comment_kind = :issue
+	else
+		reply_to = event.payload["commits"]
+	  comment_kind = :commit
+		@show keys(reply_to)
+		return HTTP.Response(200)
+	end
 
   files = [f.filename for f in GitHub.pull_request_files(repo, reply_to, auth = myauth)]
   possible_models = [split(f, "/") for f in files]
@@ -24,8 +32,7 @@ function ci()
   model = intersect(possible_models, available_models)
   model = join(model, ' ')
   @show model
-  
-  comment_kind = :issue
+
 
   # Handle when model is not found
   if all(map(isspace, collect(model)))
