@@ -39,8 +39,9 @@ function ci()
   # Handle when model is not found
   if all(map(isspace, collect(model)))
   	# comment_kind == :commit && return
-
-		throw(ErrorException("No matching models found, consider adding the appropriate models to the `Notebooks.toml`."))
+  	mas = "No matching models found, consider adding the appropriate models to the `Notebooks.toml`."
+		# throw(ErrorException(msg))
+		@info msg
   	return HTTP.Response(200)
   end
 
