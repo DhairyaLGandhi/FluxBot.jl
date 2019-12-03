@@ -1,4 +1,4 @@
-const myauth = GitHub.authenticate(ENV["FLUXBOT_GITHUB_TOKEN"])
+const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
 const trigger = r"@ModelZookeeper .*"
 const PROJECT = "15168210" # Flux.jl
 
