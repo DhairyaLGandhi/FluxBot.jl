@@ -50,7 +50,7 @@ function ci()
               "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
               "sha" => "fbb377a7b436327c298c536ecb9d2ff5ee8e07d4")
 
-  GitHub.create_comment(event.repository, reply_to, comment_kind,
-                        auth = myauth,
-                        params = placeholder_resp(reply_to, resp, comment_kind = comment_kind))
+  # GitHub.create_comment(event.repository, reply_to, comment_kind,
+  #                       auth = myauth,
+  #                       params = placeholder_resp(reply_to, resp, comment_kind = comment_kind))
 end
