@@ -12,7 +12,7 @@ function respond(repo_name = "Flux.jl")
   artifacts_name = "artifacts_$(ENV["CI_JOB_ID"]).zip"
   download("https://gitlab.com/JuliaGPU/$repo_name/-/jobs/artifacts/master/download?job=$(ENV["CI_JOB_NAME"])", artifacts_name)
   run(`unzip $artifacts_name`)
-  files = glob("*.cov", "src")#, "notebooks")
+  files = glob("*.ipynb", "notebooks")
   
   gist_params = Dict("description" => "Build Results for $(ENV["CI_JOB_NAME"])",
                       "public" => true,
