@@ -79,7 +79,7 @@ function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZO
 
   @show token
   @show token == "364932afeb6f65ff838b7e675a919d"
-  token = "soyouthinkyourethatsmart"
+  # token = "soyouthinkyourethatsmart"
   @show token
   # Check existing running pipelines triggered by bot
   # Replace the token with the variable
