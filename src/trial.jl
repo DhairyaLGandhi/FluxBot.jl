@@ -1,6 +1,6 @@
 const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
 const trigger = r"@ModelZookeeper .*"
-const PROJECT = "15168210" # Flux.jl
+const PROJECT = "15454378" # "15168210" Flux.jl, "15454378" model-zoo
 
 const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results: "),
                                 "feed" => Dict("body" => "It says not to!!"),)
@@ -131,7 +131,9 @@ function trial()
                             params = get_response(com))
     else
       @assert com == "build"
+      @info "Triggering pipeline..."
       resp = trigger_pipeline(reply_to, model, event)
+      @show resp
       # resp = Dict("id" => "98138293",
       #             "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
       #             "sha" => "fbb377a7b436327c298c536ecb9d2ff5ee8e07d4")
