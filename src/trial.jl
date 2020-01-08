@@ -124,6 +124,7 @@ function trial()
     model = get_model_names(phrase.match)
     comment_kind = :issue
     reply_to = event.payload["issue"]["number"]
+    @show com
 
     if com != "build"
       GitHub.create_comment(event.repository, reply_to, comment_kind;
