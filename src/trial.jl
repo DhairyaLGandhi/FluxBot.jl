@@ -85,7 +85,7 @@ function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZO
   # Replace the token with the variable
   r = if no_existing_pipelines()
     read(`curl -X POST
-       -F "token=364932afeb6f65ff838b7e675a919d"
+       -F "token=$token"
        -F "ref=$ref"
        -F "variables[FLUXBOT]=$fluxbot"
        -F "variables[PRID]=$id"
