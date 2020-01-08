@@ -74,7 +74,7 @@ Returns the output of the curl call as a `Dict`.
 
 NOTE: Checks for an existing running pipeline, so the artifacts generated are consistent.
 """
-function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TOKEN"], fluxbot = true)
+function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TRIGGER_TOKEN"], fluxbot = true)
   # replace project with 15454378
 
   @show token
