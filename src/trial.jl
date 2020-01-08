@@ -74,14 +74,15 @@ Returns the output of the curl call as a `Dict`.
 
 NOTE: Checks for an existing running pipeline, so the artifacts generated are consistent.
 """
-function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TRIGGER_TOKEN"], fluxbot = true)
+function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TOKEN"], fluxbot = true)
   # replace project with 15454378
 
   @show token
   # Check existing running pipelines triggered by bot
+  # Replace the token with the variable
   r = if no_existing_pipelines()
     read(`curl -X POST
-       -F "token=$token"
+       -F "token=364932afeb6f65ff838b7e675a919d"
        -F "ref=$ref"
        -F "variables[FLUXBOT]=$fluxbot"
        -F "variables[PRID]=$id"
