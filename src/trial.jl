@@ -131,10 +131,10 @@ function trial()
                             params = get_response(com))
     else
       @assert com == "build"
-      # resp = trigger_pipeline(reply_to, model, event)
-      resp = Dict("id" => "98138293",
-                  "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
-                  "sha" => "fbb377a7b436327c298c536ecb9d2ff5ee8e07d4")
+      resp = trigger_pipeline(reply_to, model, event)
+      # resp = Dict("id" => "98138293",
+      #             "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
+      #             "sha" => "fbb377a7b436327c298c536ecb9d2ff5ee8e07d4")
 
       # Handle if pipeline not triggered
       if resp == nothing
