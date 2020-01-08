@@ -77,10 +77,6 @@ NOTE: Checks for an existing running pipeline, so the artifacts generated are co
 function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TRIGGER_TOKEN"], fluxbot = true)
   # replace project with 15454378
 
-  @show token
-  @show token == "364932afeb6f65ff838b7e675a919d"
-  # token = "soyouthinkyourethatsmart"
-  @show token
   # Check existing running pipelines triggered by bot
   # Replace the token with the variable
   r = if no_existing_pipelines()
