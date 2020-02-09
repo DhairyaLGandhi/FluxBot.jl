@@ -9,7 +9,7 @@ const ENV["CI_JOB_ID"]="359540097"
 const ENV["CI_JOB_NAME"]="julia:1.1"
 
 function respond(repo_name = "Flux.jl")
-  try
+  dict = try
     artifacts_name = "artifacts_$(ENV["CI_JOB_ID"]).zip"
     download("https://gitlab.com/JuliaGPU/$repo_name/-/jobs/artifacts/master/download?job=$(ENV["CI_JOB_NAME"])", artifacts_name)
     run(`unzip $artifacts_name`)
