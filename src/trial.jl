@@ -7,8 +7,11 @@ const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results:
 
 const std_resp = Dict("body" => "I couldn't get that. Maybe try asking for `commands`?")
 const failed_resp = Dict("body" => "Pipeline Failed: ")
-placeholder_resp(issue, pl; comment_kind = :issue) = Dict("body" =>
-  "Alright, I'll respond here when I have results for $(comment_kind == :issue ? string("#", issue) : "") at `$(pl["sha"])`. The pipeline can be found at $(pl["web_url"])")
+function placeholder_resp(issue, pl, pr; comment_kind = :issue)
+  url = GitHub.commit(pr.head.repo, pr.head)
+  Dict("body" =>
+  "Alright, I'll respond here when I have results for $(comment_kind == :issue ? url.html_url : "") at `$(pl["sha"])`. The pipeline can be found at $(pl["web_url"])")
+end
 
 """
 checkout for key `pull_request` in event.payload["issue"]
@@ -106,6 +109,7 @@ function trial()
   # Ignore non-collaborators
   repo = event.repository
   user = event.payload["comment"]["user"]["login"]
+  pr = GitHub.pull_request(repo, n)
   iscollab = GitHub.iscollaborator(repo, user; auth = myauth)
   if !iscollab
     return HTTP.Response(200)
@@ -126,6 +130,7 @@ function trial()
     comment_kind = :issue
     reply_to = event.payload["issue"]["number"]
     @show com
+    pr = GitHub.pull_request(repo, reply_to)
 
     if com != "build"
       GitHub.create_comment(event.repository, reply_to, comment_kind;
@@ -152,7 +157,7 @@ function trial()
 
       GitHub.create_comment(event.repository, reply_to, comment_kind,
                             auth = myauth,
-                            params = placeholder_resp(reply_to, resp))
+                            params = placeholder_resp(reply_to, resp, pr))
     end
 
     return HTTP.Response(200)
