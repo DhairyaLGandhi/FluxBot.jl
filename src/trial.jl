@@ -109,7 +109,7 @@ function trial()
   # Ignore non-collaborators
   repo = event.repository
   user = event.payload["comment"]["user"]["login"]
-  pr = GitHub.pull_request(repo, n)
+  # pr = GitHub.pull_request(repo, n)
   iscollab = GitHub.iscollaborator(repo, user; auth = myauth)
   if !iscollab
     return HTTP.Response(200)
