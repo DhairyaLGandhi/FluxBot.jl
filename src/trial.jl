@@ -1,6 +1,7 @@
 const myauth = GitHub.authenticate(ENV["BOT_SECRET"])
 const trigger = r"@ModelZookeeper .*"
-const PROJECT = "15454378" # "15168210" Flux.jl, "15454378" model-zoo
+# const PROJECT = "15454378" # "15168210" Flux.jl, "15454378" model-zoo
+const PROJECT = "15454378"
 
 const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results: "),
                                 "feed" => Dict("body" => "It says not to!!"),)

@@ -25,6 +25,7 @@ function respond(repo_name = "Flux.jl")
   catch ex
     dict = Dict("body" => "Pipeline Failed. Check the results at $(ENV["CI_PIPELINE_URL"])")
   end
-  # GitHub.create_comment(GitHub.Repo(ENV["REPO_NAME"]), ENV["PRID"], :issue, auth = myauth, params = dict)
-  GitHub.create_comment(GitHub.Repo("dhairyagandhi96/maskrcnn"), 3, :issue, auth = myauth, params = dict)
+  @show GitHub.Repo(ENV["REPO_NAME"])
+  GitHub.create_comment(GitHub.Repo(ENV["REPO_NAME"]), ENV["PRID"], :issue, auth = myauth, params = dict)
+  # GitHub.create_comment(GitHub.Repo("dhairyagandhi96/maskrcnn"), 3, :issue, auth = myauth, params = dict)
 end
