@@ -75,7 +75,7 @@ Returns the output of the curl call as a `Dict`.
 
 NOTE: Checks for an existing running pipeline, so the artifacts generated are consistent.
 """
-function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZOO_TRIGGER_TOKEN"], fluxbot = true)
+function trigger_pipeline(::Val{:gitlab}, id, model, event; ref = "master", token = ENV["MODELZOO_TRIGGER_TOKEN"], fluxbot = true)
   # replace project with 15454378
 
   # Check existing running pipelines triggered by bot
@@ -93,7 +93,11 @@ function trigger_pipeline(id, model, event; ref = "master", token = ENV["MODELZO
   end
 end
 
-function trial()
+function trigger_pipeline(::Val{:buildkite}, id, model, event; ref = "master", token = ENV["MODELZOO_TRIGGER_TOKEN"], fluxbot = true)
+  
+end
+
+function trial(ci_service = Val{:gitlab})
   @info ENV["GITHUB_EVENT_PATH"]
   f = JSON.parsefile(ENV["GITHUB_EVENT_PATH"])
   @show keys(f)
@@ -135,7 +139,7 @@ function trial()
     else
       @assert com == "build"
       @info "Triggering pipeline..."
-      resp = trigger_pipeline(reply_to, model, event)
+      resp = trigger_pipeline(ci_service, reply_to, model, event)
       @show resp
       # resp = Dict("id" => "98138293",
       #             "web_url" => "https://gitlab.com/JuliaGPU/Flux.jl/pipelines/98138293",
