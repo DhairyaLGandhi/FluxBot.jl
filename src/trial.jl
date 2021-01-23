@@ -8,8 +8,8 @@ const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results:
 
 const std_resp = Dict("body" => "I couldn't get that. Maybe try asking for `commands`?")
 const failed_resp = Dict("body" => "Pipeline Failed: ")
-placeholder_resp(issue, pl; comment_kind = :issue) = Dict("body" =>
-  "Alright, I'll respond here when I have results for $(comment_kind == :issue ? string("#", issue) : "") at `$(pl["sha"])`. The pipeline can be found at $(pl["web_url"])")
+
+
 
 """
 checkout for key `pull_request` in event.payload["issue"]
@@ -130,6 +130,7 @@ function trial(ci_service = Val{:gitlab})
     model = get_model_names(phrase.match)
     comment_kind = :issue
     reply_to = event.payload["issue"]["number"]
+    pr = GitHub.pull_request(repo, reply_to)
     @show com
 
     if com != "build"
@@ -157,7 +158,7 @@ function trial(ci_service = Val{:gitlab})
 
       GitHub.create_comment(event.repository, reply_to, comment_kind,
                             auth = myauth,
-                            params = placeholder_resp(reply_to, resp))
+                            params = placeholder_resp(reply_to, resp, pr))
     end
 
     return HTTP.Response(200)
