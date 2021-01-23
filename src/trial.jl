@@ -9,7 +9,11 @@ const dic = Dict{String, Dict}("build" => Dict("body" => "Here are your results:
 const std_resp = Dict("body" => "I couldn't get that. Maybe try asking for `commands`?")
 const failed_resp = Dict("body" => "Pipeline Failed: ")
 
-
+function placeholder_resp(issue, pl, pr; comment_kind = :issue)
+  url = GitHub.commit(pr.head.repo, pr.head)
+  Dict("body" =>
+  "Alright, I'll respond here when I have results for $(comment_kind == :issue ? url.html_url : "") run with https://github.com/FluxML/model-zoo/commit/$(pl["sha"]). The pipeline can be found at $(pl["web_url"])")
+end
 
 """
 checkout for key `pull_request` in event.payload["issue"]
