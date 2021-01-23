@@ -102,7 +102,7 @@ function trial()
     return HTTP.Response(200)
   end
   # @show GitHub.name(event.repository)
-  @show event.payload["comment"]
+  @show event.payload["issue"]
   # Ignore non-collaborators
   repo = event.repository
   user = event.payload["comment"]["user"]["login"]
