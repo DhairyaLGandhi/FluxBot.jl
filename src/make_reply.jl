@@ -8,10 +8,13 @@
 const ENV["CI_JOB_ID"]="359540097"
 const ENV["CI_JOB_NAME"]="julia:1.1"
 
-function respond(repo_name = "Flux.jl")
+artifacts_url(::Val{:gitlab}, repo_name, job_id, job_name) = "https://gitlab.com/JuliaGPU/$repo_name/-/jobs/artifacts/master/download?job=$job_name"
+
+function respond(ci_service = Val(:gitlab), repo_name = "Flux.jl")
   dict = try
     artifacts_name = "artifacts_$(ENV["CI_JOB_ID"]).zip"
-    download("https://gitlab.com/JuliaGPU/$repo_name/-/jobs/artifacts/master/download?job=$(ENV["CI_JOB_NAME"])", artifacts_name)
+    url = artifacts_url(ci_service, repo_name, ENV["CI_JOB_ID"], ENV["CI_JOB_NAME"])
+    download(artifacts_url(ci_service, repo_name), artifacts_name)
     run(`unzip $artifacts_name`)
     files = glob("*.ipynb", "notebooks")
     
