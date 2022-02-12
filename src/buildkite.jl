@@ -8,9 +8,9 @@ const BUILDKITE_BASE_URL = "https://api.buildkite.com/v2/organizations/$ORG_SLUG
 
 function create_job(project_slug, commit, branch, env = Dict(); headers = HEADERS)
 
-  d = Dict("commit" => commit, "branch" => branch, "env" => env)
+  data = Dict("commit" => commit, "branch" => branch, "env" => env)
   url = joinpath(BUILDKITE_BASE_URL, project_slug, "builds")
-  req = HTTP.post(url, headers, data)
+  req = HTTP.post(url, headers, JSON.json(data))
   JSON.parse(String(req.body))
 end
 
@@ -30,11 +30,12 @@ function get_build(project_slug, build_number; headers = HEADERS)
   JSON.parse(String(req.body))
 end
 get_build(project_slug; kwargs...) = get_build(project_slug, ""; kwargs...)
+get_build(project_slug, build::Int; kw...) = get_build(project_slug, string(build); kw...)
 
 function create_build(project_slug, commit, branch; headers = HEADERS)
   url = joinpath(BUILDKITE_BASE_URL, project_slug, "builds")
   data = Dict("commit" => commit, "branch" => branch)
-  req = HTTP.post(url, headers, data)
+  req = HTTP.post(url, headers, JSON.json(data))
   JSON.parse(String(req.body))
 end
 
